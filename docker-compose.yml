@@ -36,7 +36,7 @@ services:
     volumes:
       - ./application:/app
     env_file:
-      - ./application/.env
+      - ./docker/.env
     depends_on:
       - mysql.coding-events.dev
     networks:
