@@ -22,8 +22,7 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql \
     && docker-php-ext-enable pdo_mysql
 
 # Download composer
-RUN curl -sS https://getcomposer.org/installer | \
-    php -- --instal-dir=/usr/bin --filename=composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 # Composer install
 COPY ./application/composer.* ./
