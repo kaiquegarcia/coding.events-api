@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Domain\Entities;
 
+use App\Domain\Entities\Phone;
+use App\Domain\Enums\PrivacyEnum;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -150,7 +152,7 @@ class PhoneTest extends TestCase
             updated_at: null,
             deleted_at: null
         );
-        $phoneArray = (array) $phone;
+        $phoneArray = $phone->jsonSerialize();
         self::assertEquals([
             'id' => $id,
             'country_code' => '+51',
