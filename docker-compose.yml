@@ -49,4 +49,5 @@ networks:
   internal:
     driver: bridge
 
-volumes: mysql_data
+volumes:
+  mysql_data:
