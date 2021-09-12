@@ -1,0 +1,52 @@
+version: '3.9'
+services:
+  mysql.coding-events.dev:
+    container_name: mysql.coding-events.dev
+    image: mysql:8.0.26
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_DATABASE=docker_db
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+    networks:
+      - internal
+
+  web.coding-events.dev:
+    container_name: web.coding-events.dev
+    image: nginx:1.21.1
+    ports:
+      - "81:80"
+    working_dir: /application
+    volumes:
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    depends_on:
+      - api.coding-events.dev
+    networks:
+      - bubble
+      - internal
+
+  api.coding-events.dev:
+    container_name: api.coding-events.dev
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./application:/app
+    env_file:
+      - ./application/.env
+    depends_on:
+      - mysql.coding-events.dev
+    networks:
+      - bubble
+      - internal
+
+networks:
+  bubble:
+    external: true
+  internal:
+    driver: bridge
+
+volumes: mysql_data
