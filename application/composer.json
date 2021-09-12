@@ -6,7 +6,12 @@
     "type": "project",
     "require": {
         "php": "^7.3|^8.0",
-        "laravel/lumen-framework": "^8.0"
+        "darkaonline/swagger-lume": "^8.0",
+        "geekcom/validator-docs": "^3.5",
+        "laravel/lumen-framework": "^8.0",
+        "pearl/lumen-request-validate": "^1.6",
+        "spatie/data-transfer-object": "^3.7",
+        "spatie/laravel-enum": "^2.5"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
