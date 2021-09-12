@@ -20,4 +20,5 @@ Sinta-se livre para usar esse código como estudo.
 
 ## Sobre o projeto
 
+![Entity-Relation Diagram](documents/ERD.jpg)
 Em breve.
