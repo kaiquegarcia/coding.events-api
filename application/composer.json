@@ -1,7 +1,7 @@
 {
-    "name": "laravel/lumen",
-    "description": "The Laravel Lumen Framework.",
-    "keywords": ["framework", "laravel", "lumen"],
+    "name": "kaiquegarcia/coding.events-api",
+    "description": "API do projeto coding.events.",
+    "keywords": ["coding", "events", "coding.events", "api"],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -26,9 +26,9 @@
         }
     },
     "autoload-dev": {
-        "classmap": [
-            "tests/"
-        ]
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "config": {
         "preferred-install": "dist",
