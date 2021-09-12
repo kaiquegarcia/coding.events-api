@@ -2,16 +2,24 @@
 
 namespace Tests\Unit\Domain\Entities;
 
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class PhoneTest extends TestCase
 {
+    private function now(): string
+    {
+        return Carbon::now()->format(DATE_ISO8601);
+    }
+
     /**
-     * @test para garantir que uma instância vazia não irá resultar em erro
+     * @test para garantir que uma instância vazia não irá resultar em erros inesperados
      */
     public function shouldInstanceWithoutInput(): void
     {
-
+        $phone = new Phone;
+        self::assertInstanceOf(Phone::class, $phone);
     }
 
     /**
@@ -19,23 +27,46 @@ class PhoneTest extends TestCase
      */
     public function shouldInstanceWithInputs(): void
     {
-
+        $id = Str::uuid();
+        $createdAt = $this->now();
+        $phone = new Phone(
+            id: $id,
+            country_code: '+55',
+            area_code: '79',
+            number: '912341234',
+            privacy: 'PUBLIC',
+            created_at: $createdAt,
+            updated_at: null,
+            deleted_at: null
+        );
+        self::assertEquals($id, $phone->getId());
+        self::assertEquals('+55', $phone->getCountryCode());
+        self::assertEquals('79', $phone->getAreaCode());
+        self::assertEquals('912341234', $phone->getNumber());
+        self::assertEquals(PrivacyEnum::PUBLIC(), $phone->getPrivacy());
+        self::assertEquals($createdAt, $phone->getCreatedAt());
+        self::assertEquals(null, $phone->getUpdatedAt());
+        self::assertEquals(null, $phone->getDeletedAt());
     }
 
     /**
-     * @test para garantir que o setter de DDI está funcionando
+     * @test para garantir que o setter de country_code está funcionando
      */
-    public function shouldSetDdiWithSetter(): void
+    public function shouldSetCountryCodeWithSetter(): void
     {
-
+        $phone = new Phone;
+        $phone->setCountryCode('+55');
+        self::assertEquals('+55', $phone->getCountryCode());
     }
 
     /**
-     * @test para garantir que o setter de DDD está funcionando
+     * @test para garantir que o setter de area_code está funcionando
      */
-    public function shouldSetDddWithSetter(): void
+    public function shouldSetAreaCodeWithSetter(): void
     {
-
+        $phone = new Phone;
+        $phone->setAreaCode('79');
+        self::assertEquals('79', $phone->getAreaCode());
     }
 
     /**
@@ -43,24 +74,54 @@ class PhoneTest extends TestCase
      */
     public function shouldSetNumberWithSetter(): void
     {
-
+        $phone = new Phone;
+        $phone->setNumber('912341234');
+        self::assertEquals('912341234', $phone->getNumber());
     }
 
     /**
+     * @dataProvider privacyEnumsDataProvider
      * @test para garantir que o setter de privacy está funcionando
      */
-    public function shouldSetPrivacyWithSetter(): void
+    public function shouldSetPrivacyAsStringWithSetter(string $privacyValue): void
     {
+        $phone = new Phone;
+        $phone->setPrivacy($privacyValue);
+        self::assertEquals($privacyValue, (string) $phone->getPrivacy());
+    }
 
+
+    /**
+     * @dataProvider privacyEnumsDataProvider
+     * @test para garantir que o setter de privacy está funcionando
+     */
+    public function shouldSetPrivacyAsEnumWithSetter(string $privacyValue): void
+    {
+        $privacy = PrivacyEnum::from($privacyValue);
+        $phone = new Phone;
+        $phone->setPrivacy($privacy);
+        self::assertEquals($privacy, $phone->getPrivacy());
     }
 
     /**
      * @dataProvider privacyEnumsDataProvider
      * @test para garantir que a entidade faz o cast para PrivacyEnum
      */
-    public function shouldInstancePrivacyEnums(string $privacyValue): void
+    public function shouldInstancePrivacyAsString(string $privacyValue): void
     {
+        $phone = new Phone(privacy: $privacyValue);
+        self::assertEquals($privacyValue, (string) $phone->getPrivacy());
+    }
 
+    /**
+     * @dataProvider privacyEnumsDataProvider
+     * @test para garantir que a entidade faz o cast para PrivacyEnum
+     */
+    public function shouldInstancePrivacyAsEnums(string $privacyValue): void
+    {
+        $privacy = PrivacyEnum::from($privacyValue);
+        $phone = new Phone(privacy: $privacy);
+        self::assertEquals($privacy, $phone->getPrivacy());
     }
 
     public function privacyEnumsDataProvider(): array
@@ -73,18 +134,59 @@ class PhoneTest extends TestCase
     }
 
     /**
-     * @test
+     * @test para garantir que a entidade pode ser facilmente convertida para array
      */
-    public function shouldSerializeToJson(): void
+    public function shouldCastToArray(): void
     {
-
+        $id = Str::uuid();
+        $createdAt = $this->now();
+        $phone = new Phone(
+            id: $id,
+            country_code: '+51',
+            area_code: '71',
+            number: '912341232',
+            privacy: PrivacyEnum::PUBLIC(),
+            created_at: $createdAt,
+            updated_at: null,
+            deleted_at: null
+        );
+        $phoneArray = (array) $phone;
+        self::assertEquals([
+            'id' => $id,
+            'country_code' => '+51',
+            'area_code' => '71',
+            'number' => '912341232',
+            'privacy' => 'PUBLIC',
+            'created_at' => $createdAt,
+            'updated_at' => null,
+            'deleted_at' => null,
+        ], $phoneArray);
     }
 
     /**
-     * @test
+     * @test para garantir que a entidade pode ser facilmente ser instanciada a partir de um array
      */
-    public function shouldUnserializeFromJson(): void
+    public function shouldInstanceFromArray(): void
     {
-
+        $id = Str::uuid();
+        $createdAt = $this->now();
+        $phone = Phone::fromArray([
+            'id' => $id,
+            'country_code' => '+53',
+            'area_code' => '72',
+            'number' => '912341233',
+            'privacy' => 'PRIVATE',
+            'created_at' => $createdAt,
+            'updated_at' => null,
+            'deleted_at' => null,
+        ]);
+        self::assertEquals($id, $phone->getId());
+        self::assertEquals('+53', $phone->getCountryCode());
+        self::assertEquals('72', $phone->getAreaCode());
+        self::assertEquals('912341233', $phone->getNumber());
+        self::assertEquals(PrivacyEnum::PRIVATE(), $phone->getPrivacy());
+        self::assertEquals($createdAt, $phone->getCreatedAt());
+        self::assertEquals(null, $phone->getUpdatedAt());
+        self::assertEquals(null, $phone->getDeletedAt());
     }
 }
