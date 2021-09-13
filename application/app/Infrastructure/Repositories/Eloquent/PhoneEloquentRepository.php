@@ -4,7 +4,6 @@ namespace App\Infrastructure\Repositories\Eloquent;
 
 use App\Domain\Entities\Phone;
 use App\Domain\Repositories\PhoneRepositoryInterface;
-use App\Infrastructure\EntityModels\AbstractModel;
 use App\Infrastructure\EntityModels\PhoneModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -37,7 +36,7 @@ class PhoneEloquentRepository extends AbstractEloquentRepository implements Phon
         return $query;
     }
 
-    public function all(array $params): Collection
+    public function all(array $params = []): Collection
     {
         return parent::searchEntities($params);
     }

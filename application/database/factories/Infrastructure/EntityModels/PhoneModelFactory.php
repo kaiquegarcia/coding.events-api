@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Infrastructure\EntityModels;
 
 use App\Domain\Enums\PrivacyEnum;
 use App\Infrastructure\EntityModels\PhoneModel;

@@ -4,9 +4,11 @@ namespace App\Infrastructure\EntityModels;
 
 use App\Domain\Entities\Phone;
 use App\Domain\Enums\PrivacyEnum;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PhoneModel extends AbstractModel
 {
+    use HasFactory;
     public string $entityClass = Phone::class;
     protected $table = 'phones';
     protected $fillable = [

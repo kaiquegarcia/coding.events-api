@@ -7,6 +7,7 @@ use App\Infrastructure\EntityModels\AbstractModel;
 use App\Infrastructure\Traits\WithPagination;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Throwable;
 
 abstract class AbstractEloquentRepository
 {
@@ -51,13 +52,45 @@ abstract class AbstractEloquentRepository
         return $model->getEntity();
     }
 
-    protected function saveEntity(AbstractEntity $entity): AbstractEntity
+    /**
+     * @param AbstractEntity $entity
+     * @return AbstractEntity
+     * @throws Throwable
+     */
+    private function createEntity(AbstractEntity $entity): AbstractEntity
     {
         $modelClass = $this->model::class;
         $model = new $modelClass($entity->jsonSerialize());
         $model->saveOrFail();
 
         return $model->getEntity();
+    }
+
+    /**
+     * @param AbstractEntity $entity
+     * @return AbstractEntity
+     * @throws Throwable
+     */
+    private function updateEntity(AbstractEntity $entity): AbstractEntity
+    {
+        $model = $this->findAsModel($entity->getId());
+        $model->fill($entity->jsonSerialize());
+        $model->saveOrFail();
+
+        return $model->getEntity();
+    }
+
+    /**
+     * @param AbstractEntity $entity
+     * @return AbstractEntity
+     * @throws Throwable
+     */
+    protected function saveEntity(AbstractEntity $entity): AbstractEntity
+    {
+        if ($entity->getId()) {
+            return $this->updateEntity($entity);
+        }
+        return $this->createEntity($entity);
     }
 
     protected function deleteById(string $id): bool

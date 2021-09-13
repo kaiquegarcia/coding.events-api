@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 interface PhoneRepositoryInterface
 {
-    public function all(array $params): Collection;
+    public function all(array $params = []): Collection;
 
     public function find(string $id): ?Phone;
 
