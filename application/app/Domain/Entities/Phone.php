@@ -43,6 +43,12 @@ class Phone extends AbstractEntity
         return $this->privacy;
     }
 
+    #[Pure]
+    public function getFullPhone(): string
+    {
+        return "{$this->getCountryCode()}{$this->getAreaCode()}{$this->getNumber()}";
+    }
+
     public function setCountryCode(string $countryCode): void
     {
         $this->country_code = $countryCode;

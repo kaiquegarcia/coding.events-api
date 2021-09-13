@@ -61,6 +61,7 @@ $app->singleton(
 $app->configure('app');
 $app->configure('database');
 $app->configure('swagger-lume');
+$app->configure('application');
 
 /*
 |--------------------------------------------------------------------------
@@ -99,6 +100,7 @@ $app->configure('swagger-lume');
 $app->register(\Pearl\RequestValidate\RequestServiceProvider::class);
 $app->register(\SwaggerLume\ServiceProvider::class);
 $app->register(\geekcom\ValidatorDocs\ValidatorProvider::class);
+$app->register(\App\Providers\RepositoryServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
