@@ -68,6 +68,7 @@ class PhoneRepositoryTest extends TestCase
         $model = PhoneModel::factory()->count(10)->create()->first();
         $phone = $this->repository->find($model->id);
         self::assertNotNull($phone);
+        self::assertEquals($model->id, $phone->getId());
     }
 
     /**
