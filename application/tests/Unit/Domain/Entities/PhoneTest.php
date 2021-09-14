@@ -4,17 +4,11 @@ namespace Tests\Unit\Domain\Entities;
 
 use App\Domain\Entities\Phone;
 use App\Domain\Enums\PrivacyEnum;
-use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class PhoneTest extends TestCase
 {
-    private function now(): string
-    {
-        return Carbon::now()->format(DATE_ISO8601);
-    }
-
     /**
      * @test para garantir que uma instância vazia não irá resultar em erros inesperados
      */
@@ -31,6 +25,8 @@ class PhoneTest extends TestCase
     {
         $id = Str::uuid();
         $createdAt = $this->now();
+        $updatedAt = $this->tomorrow();
+        $deletedAt = $this->nextMonth();
         $phone = new Phone(
             id: $id,
             country_code: '+55',
@@ -38,8 +34,8 @@ class PhoneTest extends TestCase
             number: '912341234',
             privacy: 'PUBLIC',
             created_at: $createdAt,
-            updated_at: null,
-            deleted_at: null
+            updated_at: $updatedAt,
+            deleted_at: $deletedAt
         );
         self::assertEquals($id, $phone->getId());
         self::assertEquals('+55', $phone->getCountryCode());
@@ -47,8 +43,8 @@ class PhoneTest extends TestCase
         self::assertEquals('912341234', $phone->getNumber());
         self::assertEquals(PrivacyEnum::PUBLIC(), $phone->getPrivacy());
         self::assertEquals($createdAt, $phone->getCreatedAt());
-        self::assertEquals(null, $phone->getUpdatedAt());
-        self::assertEquals(null, $phone->getDeletedAt());
+        self::assertEquals($updatedAt, $phone->getUpdatedAt());
+        self::assertEquals($deletedAt, $phone->getDeletedAt());
     }
 
     /**
@@ -142,6 +138,8 @@ class PhoneTest extends TestCase
     {
         $id = Str::uuid();
         $createdAt = $this->now();
+        $updatedAt = $this->tomorrow();
+        $deletedAt = $this->nextMonth();
         $phone = new Phone(
             id: $id,
             country_code: '+51',
@@ -149,8 +147,8 @@ class PhoneTest extends TestCase
             number: '912341232',
             privacy: PrivacyEnum::PUBLIC(),
             created_at: $createdAt,
-            updated_at: null,
-            deleted_at: null
+            updated_at: $updatedAt,
+            deleted_at: $deletedAt
         );
         $phoneArray = $phone->jsonSerialize();
         self::assertEquals([
@@ -160,8 +158,8 @@ class PhoneTest extends TestCase
             'number' => '912341232',
             'privacy' => 'PUBLIC',
             'created_at' => $createdAt,
-            'updated_at' => null,
-            'deleted_at' => null,
+            'updated_at' => $updatedAt,
+            'deleted_at' => $deletedAt,
         ], $phoneArray);
     }
 
@@ -172,6 +170,8 @@ class PhoneTest extends TestCase
     {
         $id = Str::uuid();
         $createdAt = $this->now();
+        $updatedAt = $this->tomorrow();
+        $deletedAt = $this->nextMonth();
         $phone = Phone::fromArray([
             'id' => $id,
             'country_code' => '+53',
@@ -179,8 +179,8 @@ class PhoneTest extends TestCase
             'number' => '912341233',
             'privacy' => 'PRIVATE',
             'created_at' => $createdAt,
-            'updated_at' => null,
-            'deleted_at' => null,
+            'updated_at' => $updatedAt,
+            'deleted_at' => $deletedAt,
         ]);
         self::assertEquals($id, $phone->getId());
         self::assertEquals('+53', $phone->getCountryCode());
@@ -188,7 +188,7 @@ class PhoneTest extends TestCase
         self::assertEquals('912341233', $phone->getNumber());
         self::assertEquals(PrivacyEnum::PRIVATE(), $phone->getPrivacy());
         self::assertEquals($createdAt, $phone->getCreatedAt());
-        self::assertEquals(null, $phone->getUpdatedAt());
-        self::assertEquals(null, $phone->getDeletedAt());
+        self::assertEquals($updatedAt, $phone->getUpdatedAt());
+        self::assertEquals($deletedAt, $phone->getDeletedAt());
     }
 }
