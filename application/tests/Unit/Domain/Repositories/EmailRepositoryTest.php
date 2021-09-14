@@ -4,6 +4,8 @@ namespace Tests\Unit\Domain\Repositories;
 
 use App\Domain\Entities\Email;
 use App\Domain\Enums\PrivacyEnum;
+use App\Domain\Repositories\EmailRepositoryInterface;
+use App\Infrastructure\EntityModels\EmailModel;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -44,7 +46,7 @@ class EmailRepositoryTest extends TestCase
         $email = $model->getEntity();
         $email->setUsername('me1');
         $email = $this->repository->save($email);
-        self::assertEquals('me1', $email->getAreaCode());
+        self::assertEquals('me1', $email->getUsername());
         self::assertEquals($model->id, $email->getId());
         self::assertNotNull($email->getUpdatedAt());
     }
