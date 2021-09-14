@@ -191,4 +191,17 @@ class PhoneTest extends TestCase
         self::assertEquals($updatedAt, $phone->getUpdatedAt());
         self::assertEquals($deletedAt, $phone->getDeletedAt());
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnFullPhone(): void
+    {
+        $phone = new Phone(
+            country_code: '+55',
+            area_code: '79',
+            number: '912341234'
+        );
+        self::assertEquals('+5579912341234', $phone->getFullPhone());
+    }
 }

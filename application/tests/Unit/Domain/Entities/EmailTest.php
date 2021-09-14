@@ -186,4 +186,18 @@ class EmailTest extends TestCase
         self::assertEquals($updatedAt, $email->getUpdatedAt());
         self::assertEquals($deletedAt, $email->getDeletedAt());
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnFullEmail(): void
+    {
+        $emailStr = $this->faker->email();
+        [$username, $domain] = explode('@', $emailStr);
+        $email = new Email(
+            username: $username,
+            domain: $domain
+        );
+        self::assertEquals($emailStr, $email->getFullEmail());
+    }
 }
