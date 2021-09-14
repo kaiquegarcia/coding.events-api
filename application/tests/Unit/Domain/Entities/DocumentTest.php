@@ -2,9 +2,12 @@
 
 namespace Tests\Unit\Domain\Entities;
 
+use App\Domain\Entities\Document;
+use App\Domain\Enums\DocumentTypeEnum;
 use App\Domain\Enums\PrivacyEnum;
 use Faker\Provider\pt_BR\Person;
 use Illuminate\Support\Str;
+use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 class DocumentTest extends TestCase
@@ -112,25 +115,25 @@ class DocumentTest extends TestCase
     }
 
     /**
-     * @dataProvider privacyEnumsDataProvider
+     * @dataProvider mergeOfDocumentTypeWithPrivacyEnumsDataProvider
      * @test para garantir que a entidade faz os casts para PrivacyEnum e DocumentType
      */
     public function shouldInstancePrivacyAndDocumentTypeAsString(string $privacyValue, string $documentType): void
     {
-        $document = new Document(privacy: $privacyValue, document_type: $documentType);
+        $document = new Document(document_type: $documentType, privacy: $privacyValue);
         self::assertEquals($privacyValue, (string)$document->getPrivacy());
         self::assertEquals($documentType, (string)$document->getDocumentType());
     }
 
     /**
-     * @dataProvider privacyEnumsDataProvider
+     * @dataProvider mergeOfDocumentTypeWithPrivacyEnumsDataProvider
      * @test para garantir que a entidade faz os casts para PrivacyEnum e DocumentType
      */
     public function shouldInstancePrivacyAndDocumentTypeAsEnums(string $privacyValue, string $documentType): void
     {
         $privacy = PrivacyEnum::from($privacyValue);
         $documentType = DocumentTypeEnum::from($documentType);
-        $document = new Document(privacy: $privacy);
+        $document = new Document(document_type: $documentType, privacy: $privacy);
         self::assertEquals($privacy, $document->getPrivacy());
         self::assertEquals($documentType, $document->getDocumentType());
     }
@@ -153,6 +156,7 @@ class DocumentTest extends TestCase
         ];
     }
 
+    #[Pure]
     public function mergeOfDocumentTypeWithPrivacyEnumsDataProvider(): array
     {
         $result = [];
@@ -160,7 +164,7 @@ class DocumentTest extends TestCase
         $privacyEnums = $this->privacyEnumsDataProvider();
         foreach ($documentTypes as $type) {
             foreach ($privacyEnums as $privacy) {
-                $result[] = [$privacy, $type];
+                $result[] = [$privacy[0], $type[0]];
             }
         }
         return $result;
@@ -178,8 +182,8 @@ class DocumentTest extends TestCase
         $deletedAt = $this->nextMonth();
         $document = new Document(
             id: $id,
-            cpf: $cpf,
-            documentType: DocumentTypeEnum::CPF(),
+            document_type: DocumentTypeEnum::CPF(),
+            value: $cpf,
             privacy: PrivacyEnum::PUBLIC(),
             created_at: $createdAt,
             updated_at: $updatedAt,
@@ -188,8 +192,8 @@ class DocumentTest extends TestCase
         $documentArray = $document->jsonSerialize();
         self::assertEquals([
             'id' => $id,
-            'cpf' => $cpf,
-            'documentType' => 'CPF',
+            'document_type' => 'CPF',
+            'value' => $cpf,
             'privacy' => 'PUBLIC',
             'created_at' => $createdAt,
             'updated_at' => $updatedAt,
@@ -209,8 +213,8 @@ class DocumentTest extends TestCase
         $deletedAt = $this->nextMonth();
         $document = Document::fromArray([
             'id' => $id,
-            'cpf' => $cpf,
-            'documentType' => 'CPF',
+            'document_type' => 'CPF',
+            'value' => $cpf,
             'privacy' => 'PRIVATE',
             'created_at' => $createdAt,
             'updated_at' => $updatedAt,
@@ -223,19 +227,5 @@ class DocumentTest extends TestCase
         self::assertEquals($createdAt, $document->getCreatedAt());
         self::assertEquals($updatedAt, $document->getUpdatedAt());
         self::assertEquals($deletedAt, $document->getDeletedAt());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldReturnFullDocument(): void
-    {
-        $documentStr = $this->faker->document();
-        [$username, $domain] = explode('@', $documentStr);
-        $document = new Document(
-            username: $username,
-            domain: $domain
-        );
-        self::assertEquals($documentStr, $document->getFullDocument());
     }
 }
