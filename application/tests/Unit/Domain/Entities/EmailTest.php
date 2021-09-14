@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Domain\Entities;
 
+use App\Domain\Entities\Email;
 use App\Domain\Enums\PrivacyEnum;
 use Illuminate\Support\Str;
 use Tests\TestCase;
