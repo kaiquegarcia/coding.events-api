@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Domain\Entities;
 
+use App\Domain\Entities\User;
+use App\Domain\Enums\StatusEnum;
 use Faker\Provider\pt_BR\Person;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\ArrayShape;
@@ -45,6 +47,11 @@ class UserTest extends TestCase
     {
         return new User(
             id: $input['id'],
+            first_name: $input['first_name'],
+            last_name: $input['last_name'],
+            avatar_url: $input['avatar_url'],
+            website: $input['website'],
+            bio: $input['bio'],
             status: 'PENDING',
             created_at: $input['created_at'],
             updated_at: $input['updated_at'],
@@ -107,7 +114,7 @@ class UserTest extends TestCase
             ['first_name', 'setFirstName', 'getFirstName'],
             ['last_name', 'setLastName', 'getLastName'],
             ['avatar_url', 'setAvatarUrl', 'getAvatarUrl'],
-            ['webiste', 'setWebsite', 'getWebsite'],
+            ['website', 'setWebsite', 'getWebsite'],
             ['bio', 'setBio', 'getBio'],
         ];
     }
