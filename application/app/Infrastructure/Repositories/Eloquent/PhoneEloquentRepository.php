@@ -46,9 +46,9 @@ class PhoneEloquentRepository extends AbstractEloquentRepository implements Phon
         return parent::findEntity($id);
     }
 
-    public function save(Phone $phone): ?Phone
+    public function save(Phone $entity): ?Phone
     {
-        return parent::saveEntity($phone);
+        return parent::saveEntity($entity);
     }
 
     public function delete(string $id): bool

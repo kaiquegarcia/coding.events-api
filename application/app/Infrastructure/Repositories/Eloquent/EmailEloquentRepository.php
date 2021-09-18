@@ -43,9 +43,9 @@ class EmailEloquentRepository extends AbstractEloquentRepository implements Emai
         return parent::findEntity($id);
     }
 
-    public function save(Email $phone): ?Email
+    public function save(Email $entity): ?Email
     {
-        return parent::saveEntity($phone);
+        return parent::saveEntity($entity);
     }
 
     public function delete(string $id): bool

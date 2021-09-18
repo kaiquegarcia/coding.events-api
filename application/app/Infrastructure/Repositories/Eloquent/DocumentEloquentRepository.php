@@ -43,9 +43,9 @@ class DocumentEloquentRepository extends AbstractEloquentRepository implements D
         return parent::findEntity($id);
     }
 
-    public function save(Document $phone): ?Document
+    public function save(Document $entity): ?Document
     {
-        return parent::saveEntity($phone);
+        return parent::saveEntity($entity);
     }
 
     public function delete(string $id): bool
