@@ -21,17 +21,17 @@ class PhoneEloquentRepository extends AbstractEloquentRepository implements Phon
     protected function prepareEloquentBuilder(array $params): Builder
     {
         $query = $this->model::query();
-        if (isset($params['country_code'])) {
-            $query = $query->where('country_code', $params['country_code']);
-        }
-        if (isset($params['area_code'])) {
-            $query = $query->where('area_code', $params['area_code']);
-        }
-        if (isset($params['number'])) {
-            $query = $query->where('number', $params['number']);
-        }
-        if (isset($params['privacy'])) {
-            $query = $query->where('privacy', $params['privacy']);
+        $possibleParams = [
+            'country_code',
+            'area_code',
+            'number',
+            'privacy',
+        ];
+        foreach ($possibleParams as $key) {
+            if (empty($params[$key])) {
+                continue;
+            }
+            $query = $query->where($key, $params[$key]);
         }
         return $query;
     }

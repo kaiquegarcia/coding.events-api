@@ -21,14 +21,16 @@ class DocumentEloquentRepository extends AbstractEloquentRepository implements D
     protected function prepareEloquentBuilder(array $params): Builder
     {
         $query = $this->model::query();
-        if (isset($params['document_type'])) {
-            $query = $query->where('document_type', $params['document_type']);
-        }
-        if (isset($params['value'])) {
-            $query = $query->where('value', $params['value']);
-        }
-        if (isset($params['privacy'])) {
-            $query = $query->where('privacy', $params['privacy']);
+        $possibleParams = [
+            'document_type',
+            'value',
+            'privacy',
+        ];
+        foreach($possibleParams as $key) {
+            if(empty($params[$key])) {
+                continue;
+            }
+            $query = $query->where($key, $params[$key]);
         }
         return $query;
     }

@@ -21,14 +21,16 @@ class EmailEloquentRepository extends AbstractEloquentRepository implements Emai
     protected function prepareEloquentBuilder(array $params): Builder
     {
         $query = $this->model::query();
-        if (isset($params['username'])) {
-            $query = $query->where('username', $params['username']);
-        }
-        if (isset($params['domain'])) {
-            $query = $query->where('domain', $params['domain']);
-        }
-        if (isset($params['privacy'])) {
-            $query = $query->where('privacy', $params['privacy']);
+        $possibleParams = [
+            'username',
+            'domain',
+            'privacy',
+        ];
+        foreach($possibleParams as $key) {
+            if(empty($params[$key])) {
+                continue;
+            }
+            $query = $query->where($key, $params[$key]);
         }
         return $query;
     }
