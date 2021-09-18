@@ -2,14 +2,16 @@
 
 namespace Tests\Unit\Domain\Repositories;
 
+use App\Domain\Entities\Address;
+use App\Domain\Repositories\AddressRepositoryInterface;
+use App\Infrastructure\EntityModels\AddressModel;
 use Faker\Provider\pt_BR\Address as FakerAddress;
 use Laravel\Lumen\Testing\DatabaseMigrations;
-use Tests\Helpers\Traits\AddressInputGenerator;
 use Tests\TestCase;
 
 class AddressRepositoryTest extends TestCase
 {
-    use AddressInputGenerator, DatabaseMigrations;
+    use DatabaseMigrations;
 
     private AddressRepositoryInterface $repository;
     public function setUp(): void
@@ -24,8 +26,10 @@ class AddressRepositoryTest extends TestCase
      */
     public function shouldCreateFromEntity(): void
     {
-        $input = $this->getEntityInput();
-        $entity = $this->getNewEntityInstance($input);
+        /** @var AddressModel $model */
+        $model = AddressModel::factory()->makeOne();
+        /** @var Address $entity */
+        $entity = $model->getEntity();
         $entity = $this->repository->save($entity);
         self::assertNotNull($entity->getId());
         self::assertNotNull($entity->getCreatedAt());
@@ -40,7 +44,7 @@ class AddressRepositoryTest extends TestCase
         $entity = $model->getEntity();
         $entity->setTitle('Addr Test');
         $entity = $this->repository->save($entity);
-        self::assertEquals('Addr Test', $entity->getValue());
+        self::assertEquals('Addr Test', $entity->getTitle());
         self::assertEquals($model->id, $entity->getId());
         self::assertNotNull($entity->getUpdatedAt());
     }

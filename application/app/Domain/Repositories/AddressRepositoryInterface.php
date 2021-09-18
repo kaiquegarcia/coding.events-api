@@ -11,7 +11,7 @@ interface AddressRepositoryInterface
 
     public function find(string $id): ?Address;
 
-    public function save(Address $phone): ?Address;
+    public function save(Address $address): ?Address;
 
     public function delete(string $id): bool;
 
