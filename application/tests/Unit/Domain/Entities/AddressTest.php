@@ -5,11 +5,12 @@ namespace Tests\Unit\Domain\Entities;
 use App\Domain\Entities\Address;
 use App\Domain\Enums\PrivacyEnum;
 use Faker\Provider\pt_BR\Address as FakerAddress;
-use Illuminate\Support\Str;
+use Tests\Helpers\Traits\AddressInputGenerator;
 use Tests\TestCase;
 
 class AddressTest extends TestCase
 {
+    use AddressInputGenerator;
 
     public function setUp(): void
     {
@@ -24,45 +25,6 @@ class AddressTest extends TestCase
     {
         $address = new Address;
         self::assertInstanceOf(Address::class, $address);
-    }
-
-    private function getEntityInput(): array
-    {
-        return [
-            'id' => (string) Str::uuid(),
-            'title' => $this->faker->word(),
-            'postal_code' => $this->faker->postcode(),
-            'country' => $this->faker->countryCode(),
-            'state' => $this->faker->state(),
-            'city' => $this->faker->city(),
-            'neighborhood' => $this->faker->words(2, true),
-            'street' => $this->faker->streetName(),
-            'number' => $this->faker->boolean() ? "{$this->faker->randomNumber()}" : 'S/N',
-            'complement' => $this->faker->boolean() ? $this->faker->words(4, true) : '',
-            'created_at' => $this->now(),
-            'updated_at' => $this->tomorrow(),
-            'deleted_at' => $this->nextMonth(),
-        ];
-    }
-
-    private function getNewEntityInstance(array $input): Address
-    {
-        return new Address(
-            id: $input['id'],
-            title: $input['title'],
-            postal_code: $input['postal_code'],
-            country: $input['country'],
-            state: $input['state'],
-            city: $input['city'],
-            neighborhood: $input['neighborhood'],
-            street: $input['street'],
-            number: $input['number'],
-            complement: $input['complement'],
-            privacy: 'PUBLIC',
-            created_at: $input['created_at'],
-            updated_at: $input['updated_at'],
-            deleted_at: $input['deleted_at']
-        );
     }
 
     private static function assertEntityGetters(array $input, Address $entity): void
