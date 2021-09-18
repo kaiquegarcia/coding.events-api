@@ -101,6 +101,7 @@ $app->register(\Pearl\RequestValidate\RequestServiceProvider::class);
 $app->register(\SwaggerLume\ServiceProvider::class);
 $app->register(\geekcom\ValidatorDocs\ValidatorProvider::class);
 $app->register(\App\Providers\RepositoryServiceProvider::class);
+$app->register(\App\Providers\ComponentServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
