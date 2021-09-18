@@ -2,9 +2,7 @@
 
 namespace Tests\Unit\Domain\Repositories;
 
-use App\Domain\Entities\Address;
 use Faker\Provider\pt_BR\Address as FakerAddress;
-use Illuminate\Support\Str;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Tests\Helpers\Traits\AddressInputGenerator;
 use Tests\TestCase;
