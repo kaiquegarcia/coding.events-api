@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Domain\Entities;
 
+use App\Domain\Entities\Address;
 use App\Domain\Enums\PrivacyEnum;
 use Faker\Provider\pt_BR\Address as FakerAddress;
 use Illuminate\Support\Str;
@@ -25,53 +26,70 @@ class AddressTest extends TestCase
         self::assertInstanceOf(Address::class, $address);
     }
 
+    private function getEntityInput(): array
+    {
+        return [
+            'id' => (string) Str::uuid(),
+            'title' => $this->faker->word(),
+            'postal_code' => $this->faker->postcode(),
+            'country' => $this->faker->countryCode(),
+            'state' => $this->faker->state(),
+            'city' => $this->faker->city(),
+            'neighborhood' => $this->faker->words(2, true),
+            'street' => $this->faker->streetName(),
+            'number' => $this->faker->boolean() ? "{$this->faker->randomNumber()}" : 'S/N',
+            'complement' => $this->faker->boolean() ? $this->faker->words(4, true) : '',
+            'created_at' => $this->now(),
+            'updated_at' => $this->tomorrow(),
+            'deleted_at' => $this->nextMonth(),
+        ];
+    }
+
+    private function getNewEntityInstance(array $input): Address
+    {
+        return new Address(
+            id: $input['id'],
+            title: $input['title'],
+            postal_code: $input['postal_code'],
+            country: $input['country'],
+            state: $input['state'],
+            city: $input['city'],
+            neighborhood: $input['neighborhood'],
+            street: $input['street'],
+            number: $input['number'],
+            complement: $input['complement'],
+            privacy: 'PUBLIC',
+            created_at: $input['created_at'],
+            updated_at: $input['updated_at'],
+            deleted_at: $input['deleted_at']
+        );
+    }
+
+    private static function assertEntityGetters(array $input, Address $entity): void
+    {
+        self::assertEquals($input['id'], $entity->getId());
+        self::assertEquals($input['title'], $entity->getTitle());
+        self::assertEquals($input['postal_code'], $entity->getPostalCode());
+        self::assertEquals($input['country'], $entity->getCountry());
+        self::assertEquals($input['state'], $entity->getState());
+        self::assertEquals($input['city'], $entity->getCity());
+        self::assertEquals($input['neighborhood'], $entity->getNeighborhood());
+        self::assertEquals($input['street'], $entity->getStreet());
+        self::assertEquals($input['complement'], $entity->getComplement());
+        self::assertEquals(PrivacyEnum::PUBLIC(), $entity->getPrivacy());
+        self::assertEquals($input['created_at'], $entity->getCreatedAt());
+        self::assertEquals($input['updated_at'], $entity->getUpdatedAt());
+        self::assertEquals($input['deleted_at'], $entity->getDeletedAt());
+    }
+
     /**
      * @test para garantir a possibilidade de gerar uma instância com os dados preenchidos
      */
     public function shouldInstanceWithInputs(): void
     {
-        $id = Str::uuid();
-        $title = $this->faker->word();
-        $postalCode = $this->faker->postcode();
-        $country = $this->faker->countryCode();
-        $state = $this->faker->state();
-        $city = $this->faker->city();
-        $neighborhood = $this->faker->words(2);
-        $street = $this->faker->streetName();
-        $number = $this->faker->boolean() ? "{$this->faker->randomNumber()}" : 'S/N';
-        $complement = $this->faker->boolean() ? $this->faker->words(4) : null;
-        $createdAt = $this->now();
-        $updatedAt = $this->tomorrow();
-        $deletedAt = $this->nextMonth();
-        $address = new Address(
-            id: $id,
-            title: $title,
-            postal_code: $postalCode,
-            country: $country,
-            state: $state,
-            city: $city,
-            neighborhood: $neighborhood,
-            street: $street,
-            number: $number,
-            complement: $complement,
-            privacy: 'PUBLIC',
-            created_at: $createdAt,
-            updated_at: $updatedAt,
-            deleted_at: $deletedAt
-        );
-        self::assertEquals($id, $address->getId());
-        self::assertEquals($title, $address->getTitle());
-        self::assertEquals($postalCode, $address->getPostalCode());
-        self::assertEquals($country, $address->getCountry());
-        self::assertEquals($state, $address->getState());
-        self::assertEquals($city, $address->getCity());
-        self::assertEquals($neighborhood, $address->getNeighborhood());
-        self::assertEquals($street, $address->getStreet());
-        self::assertEquals($complement, $address->getComplement());
-        self::assertEquals(PrivacyEnum::PUBLIC(), $address->getPrivacy());
-        self::assertEquals($createdAt, $address->getCreatedAt());
-        self::assertEquals($updatedAt, $address->getUpdatedAt());
-        self::assertEquals($deletedAt, $address->getDeletedAt());
+        $input = $this->getEntityInput();
+        $entity = $this->getNewEntityInstance($input);
+        self::assertEntityGetters($input, $entity);
     }
 
     /**
@@ -79,10 +97,10 @@ class AddressTest extends TestCase
      */
     public function shouldSetTitleWithSetter(): void
     {
-        $title = $this->faker->word();
+        $input = $this->getEntityInput();
         $address = new Address;
-        $address->setTitle($title);
-        self::assertEquals($title, $address->getTitle());
+        $address->setTitle($input['title']);
+        self::assertEquals($input['title'], $address->getTitle());
     }
 
     /**
@@ -90,10 +108,10 @@ class AddressTest extends TestCase
      */
     public function shouldSetPostalCodeWithSetter(): void
     {
-        $postalCode = $this->faker->postcode();
+        $input = $this->getEntityInput();
         $address = new Address;
-        $address->setPostalCode($postalCode);
-        self::assertEquals($postalCode, $address->getPostalCode());
+        $address->setPostalCode($input['postal_code']);
+        self::assertEquals($input['postal_code'], $address->getPostalCode());
     }
 
     /**
@@ -101,10 +119,10 @@ class AddressTest extends TestCase
      */
     public function shouldSetCountryWithSetter(): void
     {
-        $country = $this->faker->countryCode();
+        $input = $this->getEntityInput();
         $address = new Address;
-        $address->setCountry($country);
-        self::assertEquals($country, $address->getCountry());
+        $address->setCountry($input['country']);
+        self::assertEquals($input['country'], $address->getCountry());
     }
 
     /**
@@ -112,10 +130,10 @@ class AddressTest extends TestCase
      */
     public function shouldSetStateWithSetter(): void
     {
-        $state = $this->faker->state();
+        $input = $this->getEntityInput();
         $address = new Address;
-        $address->setState($state);
-        self::assertEquals($state, $address->getState());
+        $address->setState($input['state']);
+        self::assertEquals($input['state'], $address->getState());
     }
 
     /**
@@ -123,10 +141,10 @@ class AddressTest extends TestCase
      */
     public function shouldSetCityWithSetter(): void
     {
-        $city = $this->faker->city();
+        $input = $this->getEntityInput();
         $address = new Address;
-        $address->setCity($city);
-        self::assertEquals($city, $address->getCity());
+        $address->setCity($input['city']);
+        self::assertEquals($input['city'], $address->getCity());
     }
 
     /**
@@ -134,10 +152,10 @@ class AddressTest extends TestCase
      */
     public function shouldSetNeighborhoodWithSetter(): void
     {
-        $neighborhood = $this->faker->words(2);
+        $input = $this->getEntityInput();
         $address = new Address;
-        $address->setNeighborhood($neighborhood);
-        self::assertEquals($neighborhood, $address->getNeighborhood());
+        $address->setNeighborhood($input['neighborhood']);
+        self::assertEquals($input['neighborhood'], $address->getNeighborhood());
     }
 
     /**
@@ -145,10 +163,10 @@ class AddressTest extends TestCase
      */
     public function shouldSetStreetWithSetter(): void
     {
-        $street = $this->faker->streetName();
+        $input = $this->getEntityInput();
         $address = new Address;
-        $address->setStreet($street);
-        self::assertEquals($street, $address->getStreet());
+        $address->setStreet($input['street']);
+        self::assertEquals($input['street'], $address->getStreet());
     }
 
     /**
@@ -156,10 +174,10 @@ class AddressTest extends TestCase
      */
     public function shouldSetNumberWithSetter(): void
     {
-        $number = $this->faker->boolean() ? "{$this->faker->randomNumber()}" : 'S/N';
+        $input = $this->getEntityInput();
         $address = new Address;
-        $address->setNumber($number);
-        self::assertEquals($number, $address->getNumber());
+        $address->setNumber($input['number']);
+        self::assertEquals($input['number'], $address->getNumber());
     }
 
     /**
@@ -167,10 +185,10 @@ class AddressTest extends TestCase
      */
     public function shouldSetComplementWithSetter(): void
     {
-        $complement = $this->faker->boolean() ? $this->faker->words(4) : null;
+        $input = $this->getEntityInput();
         $address = new Address;
-        $address->setComplement($complement);
-        self::assertEquals($complement, $address->getComplement());
+        $address->setComplement($input['complement']);
+        self::assertEquals($input['complement'], $address->getComplement());
     }
 
     /**
@@ -232,52 +250,25 @@ class AddressTest extends TestCase
      */
     public function shouldCastToArray(): void
     {
-        $id = Str::uuid();
-        $title = $this->faker->word();
-        $postalCode = $this->faker->postcode();
-        $country = $this->faker->countryCode();
-        $state = $this->faker->state();
-        $city = $this->faker->city();
-        $neighborhood = $this->faker->words(2);
-        $street = $this->faker->streetName();
-        $number = $this->faker->boolean() ? "{$this->faker->randomNumber()}" : 'S/N';
-        $complement = $this->faker->boolean() ? $this->faker->words(4) : null;
-        $createdAt = $this->now();
-        $updatedAt = $this->tomorrow();
-        $deletedAt = $this->nextMonth();
-        $address = new Address(
-            id: $id,
-            title: $title,
-            postal_code: $postalCode,
-            country: $country,
-            state: $state,
-            city: $city,
-            neighborhood: $neighborhood,
-            street: $street,
-            number: $number,
-            complement: $complement,
-            privacy: 'PUBLIC',
-            created_at: $createdAt,
-            updated_at: $updatedAt,
-            deleted_at: $deletedAt
-        );
-        $addressArray = $address->jsonSerialize();
+        $input = $this->getEntityInput();
+        $entity = $this->getNewEntityInstance($input);
+        $entityArray = $entity->jsonSerialize();
         self::assertEquals([
-            'id' => $id,
-            'title' => $title,
-            'postal_code' => $postalCode,
-            'country' => $country,
-            'state' => $state,
-            'city' => $city,
-            'neighborhood' => $neighborhood,
-            'street' => $street,
-            'number' => $number,
-            'complement' => $complement,
+            'id' => $input['id'],
+            'title' => $input['title'],
+            'postal_code' => $input['postal_code'],
+            'country' => $input['country'],
+            'state' => $input['state'],
+            'city' => $input['city'],
+            'neighborhood' => $input['neighborhood'],
+            'street' => $input['street'],
+            'number' => $input['number'],
+            'complement' => $input['complement'],
             'privacy' => 'PUBLIC',
-            'created_at' => $createdAt,
-            'updated_at' => $updatedAt,
-            'deleted_at' => $deletedAt,
-        ], $addressArray);
+            'created_at' => $input['created_at'],
+            'updated_at' => $input['updated_at'],
+            'deleted_at' => $input['deleted_at'],
+        ], $entityArray);
     }
 
     /**
@@ -285,47 +276,23 @@ class AddressTest extends TestCase
      */
     public function shouldInstanceFromArray(): void
     {
-        $id = Str::uuid();
-        $title = $this->faker->word();
-        $postalCode = $this->faker->postcode();
-        $country = $this->faker->countryCode();
-        $state = $this->faker->state();
-        $city = $this->faker->city();
-        $neighborhood = $this->faker->words(2);
-        $street = $this->faker->streetName();
-        $number = $this->faker->boolean() ? "{$this->faker->randomNumber()}" : 'S/N';
-        $complement = $this->faker->boolean() ? $this->faker->words(4) : null;
-        $createdAt = $this->now();
-        $updatedAt = $this->tomorrow();
-        $deletedAt = $this->nextMonth();
-        $address = Address::fromArray([
-            'id' => $id,
-            'title' => $title,
-            'postal_code' => $postalCode,
-            'country' => $country,
-            'state' => $state,
-            'city' => $city,
-            'neighborhood' => $neighborhood,
-            'street' => $street,
-            'number' => $number,
-            'complement' => $complement,
+        $input = $this->getEntityInput();
+        $entity = Address::fromArray([
+            'id' => $input['id'],
+            'title' => $input['title'],
+            'postal_code' => $input['postal_code'],
+            'country' => $input['country'],
+            'state' => $input['state'],
+            'city' => $input['city'],
+            'neighborhood' => $input['neighborhood'],
+            'street' => $input['street'],
+            'number' => $input['number'],
+            'complement' => $input['complement'],
             'privacy' => 'PUBLIC',
-            'created_at' => $createdAt,
-            'updated_at' => $updatedAt,
-            'deleted_at' => $deletedAt,
+            'created_at' => $input['created_at'],
+            'updated_at' => $input['updated_at'],
+            'deleted_at' => $input['deleted_at'],
         ]);
-        self::assertEquals($id, $address->getId());
-        self::assertEquals($title, $address->getTitle());
-        self::assertEquals($postalCode, $address->getPostalCode());
-        self::assertEquals($country, $address->getCountry());
-        self::assertEquals($state, $address->getState());
-        self::assertEquals($city, $address->getCity());
-        self::assertEquals($neighborhood, $address->getNeighborhood());
-        self::assertEquals($street, $address->getStreet());
-        self::assertEquals($complement, $address->getComplement());
-        self::assertEquals(PrivacyEnum::PUBLIC(), $address->getPrivacy());
-        self::assertEquals($createdAt, $address->getCreatedAt());
-        self::assertEquals($updatedAt, $address->getUpdatedAt());
-        self::assertEquals($deletedAt, $address->getDeletedAt());
+        self::assertEntityGetters($input, $entity);
     }
 }
