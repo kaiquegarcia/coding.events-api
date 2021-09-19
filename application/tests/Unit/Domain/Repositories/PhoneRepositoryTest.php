@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domain\Repositories;
 
 use App\Domain\Entities\Phone;
-use App\Domain\Enums\PrivacyEnum;
 use App\Domain\Repositories\PhoneRepositoryInterface;
 use App\Infrastructure\EntityModels\PhoneModel;
 use Laravel\Lumen\Testing\DatabaseMigrations;

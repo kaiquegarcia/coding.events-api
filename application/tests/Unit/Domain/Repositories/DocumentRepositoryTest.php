@@ -3,8 +3,6 @@
 namespace Tests\Unit\Domain\Repositories;
 
 use App\Domain\Entities\Document;
-use App\Domain\Enums\DocumentTypeEnum;
-use App\Domain\Enums\PrivacyEnum;
 use App\Domain\Repositories\DocumentRepositoryInterface;
 use App\Infrastructure\EntityModels\DocumentModel;
 use Faker\Provider\pt_BR\Person;

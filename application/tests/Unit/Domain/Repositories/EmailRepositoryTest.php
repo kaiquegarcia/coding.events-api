@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domain\Repositories;
 
 use App\Domain\Entities\Email;
-use App\Domain\Enums\PrivacyEnum;
 use App\Domain\Repositories\EmailRepositoryInterface;
 use App\Infrastructure\EntityModels\EmailModel;
 use Laravel\Lumen\Testing\DatabaseMigrations;
