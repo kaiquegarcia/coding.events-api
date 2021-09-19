@@ -2,6 +2,9 @@
 
 namespace Tests\Unit\Domain\Repositories;
 
+use App\Domain\Entities\User;
+use App\Domain\Repositories\UserRepositoryInterface;
+use App\Infrastructure\EntityModels\UserModel;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
