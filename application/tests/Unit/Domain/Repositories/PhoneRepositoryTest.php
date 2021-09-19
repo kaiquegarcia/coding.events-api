@@ -25,13 +25,13 @@ class PhoneRepositoryTest extends TestCase
      */
     public function shouldCreateFromEntity(): void
     {
-        $phone = new Phone(
-            country_code: '+55',
-            area_code: '79',
-            number: '912341234',
-            privacy: PrivacyEnum::SUBSCRIBERS()
-        );
+        /** @var PhoneModel $model */
+        $model = PhoneModel::factory()->makeOne();
+
+        /** @var Phone $phone */
+        $phone = $model->getEntity();
         $phone = $this->repository->save($phone);
+
         self::assertNotNull($phone->getId());
         self::assertNotNull($phone->getCreatedAt());
     }

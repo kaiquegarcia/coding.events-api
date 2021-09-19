@@ -25,14 +25,13 @@ class EmailRepositoryTest extends TestCase
      */
     public function shouldCreateFromEntity(): void
     {
-        $email = $this->faker->email();
-        [$username, $domain] = explode('@', $email);
-        $email = new Email(
-            username: $username,
-            domain: $domain,
-            privacy: PrivacyEnum::SUBSCRIBERS()
-        );
+        /** @var EmailModel $model */
+        $model = EmailModel::factory()->makeOne();
+
+        /** @var Email $email */
+        $email = $model->getEntity();
         $email = $this->repository->save($email);
+
         self::assertNotNull($email->getId());
         self::assertNotNull($email->getCreatedAt());
     }

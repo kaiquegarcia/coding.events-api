@@ -28,13 +28,13 @@ class DocumentRepositoryTest extends TestCase
      */
     public function shouldCreateFromEntity(): void
     {
-        $cpf = $this->faker->cpf();
-        $document = new Document(
-            document_type: DocumentTypeEnum::CPF(),
-            value: $cpf,
-            privacy: PrivacyEnum::SUBSCRIBERS()
-        );
+        /** @var DocumentModel $model */
+        $model = DocumentModel::factory()->makeOne();
+
+        /** @var Document $document */
+        $document = $model->getEntity();
         $document = $this->repository->save($document);
+
         self::assertNotNull($document->getId());
         self::assertNotNull($document->getCreatedAt());
     }
