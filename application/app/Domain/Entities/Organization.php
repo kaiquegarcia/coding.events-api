@@ -74,6 +74,11 @@ class Organization extends AbstractEntity
         $this->fantasy_name = $fantasyName;
     }
 
+    public function setLogoUrl(string $logoUrl): void
+    {
+        $this->logo_url = $logoUrl;
+    }
+
     public function setWebsite(string $website): void
     {
         $this->website = $website;
@@ -99,6 +104,7 @@ class Organization extends AbstractEntity
             owner_id: $params['owner_id'] ?? null,
             corporate_name: $params['corporate_name'] ?? null,
             fantasy_name: $params['fantasy_name'] ?? null,
+            logo_url: $params['logo_url'] ?? null,
             website: $params['website'] ?? null,
             description: $params['description'] ?? null,
             status: $params['status'] ?? null,
@@ -115,6 +121,7 @@ class Organization extends AbstractEntity
             'owner_id' => $this->owner_id,
             'corporate_name' => $this->corporate_name,
             'fantasy_name' => $this->fantasy_name,
+            'logo_url' => $this->logo_url,
             'website' => $this->website,
             'description' => $this->description,
             'status' => $this->status?->value,

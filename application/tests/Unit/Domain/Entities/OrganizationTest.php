@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Domain\Entities;
 
+use App\Domain\Entities\Organization;
+use App\Domain\Enums\OrganizationStatusEnum;
 use Faker\Provider\pt_BR\Company;
 use Illuminate\Support\Str;
 use Tests\TestCase;
