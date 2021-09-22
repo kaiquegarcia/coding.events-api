@@ -9,4 +9,4 @@ use Spatie\Enum\Laravel\Enum;
  * @method static self ACTIVE()
  * @method static self BANNED()
  */
-class StatusEnum extends Enum { }
+class UserStatusEnum extends Enum { }

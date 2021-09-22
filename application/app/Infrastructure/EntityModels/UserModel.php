@@ -3,7 +3,7 @@
 namespace App\Infrastructure\EntityModels;
 
 use App\Domain\Entities\User;
-use App\Domain\Enums\StatusEnum;
+use App\Domain\Enums\UserStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserModel extends AbstractModel
@@ -24,6 +24,6 @@ class UserModel extends AbstractModel
         'deleted_at',
     ];
     protected $casts = [
-        'status' => StatusEnum::class . ':nullable',
+        'status' => UserStatusEnum::class . ':nullable',
     ];
 }

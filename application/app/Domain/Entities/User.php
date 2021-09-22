@@ -2,7 +2,7 @@
 
 namespace App\Domain\Entities;
 
-use App\Domain\Enums\StatusEnum;
+use App\Domain\Enums\UserStatusEnum;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
@@ -15,7 +15,7 @@ class User extends AbstractEntity
         private ?string $avatar_url = null,
         private ?string $website = null,
         private ?string $bio = null,
-        private StatusEnum|string|null $status = null,
+        private UserStatusEnum|string|null $status = null,
         protected ?string $created_at = null,
         protected ?string $updated_at = null,
         protected ?string $deleted_at = null
@@ -50,7 +50,7 @@ class User extends AbstractEntity
         return $this->bio;
     }
 
-    public function getStatus(): ?StatusEnum
+    public function getStatus(): ?UserStatusEnum
     {
         return $this->status;
     }
@@ -90,10 +90,10 @@ class User extends AbstractEntity
         $this->bio = $bio;
     }
 
-    public function setStatus(StatusEnum|string $status): void
+    public function setStatus(UserStatusEnum|string $status): void
     {
         if (is_string($status)) {
-            $status = StatusEnum::from($status);
+            $status = UserStatusEnum::from($status);
         }
         $this->status = $status;
     }

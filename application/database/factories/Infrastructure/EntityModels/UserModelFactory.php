@@ -2,7 +2,7 @@
 
 namespace Database\Factories\Infrastructure\EntityModels;
 
-use App\Domain\Enums\StatusEnum;
+use App\Domain\Enums\UserStatusEnum;
 use App\Infrastructure\EntityModels\UserModel;
 use Faker\Provider\pt_BR\Person;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -32,7 +32,7 @@ class UserModelFactory extends Factory
             'avatar_url' => $this->faker->imageUrl(),
             'website' => $this->faker->url(),
             'bio' => $this->faker->paragraphs(10, true),
-            'status' => $this->faker->randomEnum(StatusEnum::class),
+            'status' => $this->faker->randomEnum(UserStatusEnum::class),
         ];
     }
 }

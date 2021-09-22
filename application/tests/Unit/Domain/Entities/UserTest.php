@@ -3,7 +3,7 @@
 namespace Tests\Unit\Domain\Entities;
 
 use App\Domain\Entities\User;
-use App\Domain\Enums\StatusEnum;
+use App\Domain\Enums\UserStatusEnum;
 use Faker\Provider\pt_BR\Person;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\ArrayShape;
@@ -67,7 +67,7 @@ class UserTest extends TestCase
         self::assertEquals($input['avatar_url'], $entity->getAvatarUrl());
         self::assertEquals($input['website'], $entity->getWebsite());
         self::assertEquals($input['bio'], $entity->getBio());
-        self::assertEquals(StatusEnum::PENDING(), $entity->getStatus());
+        self::assertEquals(UserStatusEnum::PENDING(), $entity->getStatus());
         self::assertEquals($input['created_at'], $entity->getCreatedAt());
         self::assertEquals($input['updated_at'], $entity->getUpdatedAt());
         self::assertEquals($input['deleted_at'], $entity->getDeletedAt());
@@ -137,7 +137,7 @@ class UserTest extends TestCase
      */
     public function shouldSetStatusAsEnumWithSetter(string $statusValue): void
     {
-        $status = StatusEnum::from($statusValue);
+        $status = UserStatusEnum::from($statusValue);
         $user = new User;
         $user->setStatus($status);
         self::assertEquals($status, $user->getStatus());
@@ -159,7 +159,7 @@ class UserTest extends TestCase
      */
     public function shouldInstanceStatusAsEnums(string $statusValue): void
     {
-        $status = StatusEnum::from($statusValue);
+        $status = UserStatusEnum::from($statusValue);
         $user = new User(status: $status);
         self::assertEquals($status, $user->getStatus());
     }
