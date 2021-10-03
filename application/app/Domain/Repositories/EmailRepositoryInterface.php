@@ -11,7 +11,7 @@ interface EmailRepositoryInterface
 
     public function find(string $id): ?Email;
 
-    public function save(Email $phone): ?Email;
+    public function save(Email $email): ?Email;
 
     public function delete(string $id): bool;
 
