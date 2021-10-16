@@ -15,8 +15,11 @@ class CreateOrganizationsTable extends Migration
     public function up()
     {
         Schema::create('organizations', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid('owner_id');
+            $table->uuid('id')
+                ->primary();
+            $table->foreignUuid('owner_id')
+                ->references('id')
+                ->on('users');
             $table->string('corporate_name', 75);
             $table->string('fantasy_name', 75);
             $table->string('logo_url', 255);
