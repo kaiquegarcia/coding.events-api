@@ -4,6 +4,8 @@ namespace Tests\Unit\Domain\Repositories;
 
 use App\Domain\Entities\Organization;
 use App\Domain\Entities\User;
+use App\Domain\Repositories\OrganizationRepositoryInterface;
+use App\Infrastructure\EntityModels\OrganizationModel;
 use App\Infrastructure\EntityModels\UserModel;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Tests\TestCase;
