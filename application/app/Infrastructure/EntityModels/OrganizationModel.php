@@ -29,9 +29,4 @@ class OrganizationModel extends AbstractModel
     protected $casts = [
         'status' => OrganizationStatusEnum::class . ':nullable',
     ];
-
-    public function owner(): BelongsTo
-    {
-        return $this->belongsTo(UserModel::class, 'owner_id', 'id');
-    }
 }
